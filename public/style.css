@@ -1,0 +1,145 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    /* background-color: antiquewhite; */
+    background-color: #121212;
+    text-align: center;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 18px;
+    color: white;
+}
+
+#content {
+    display: block;
+    padding: 20px;
+}
+
+body::-webkit-scrollbar {
+    display: none;
+}
+
+.playlists-display {
+    width: 96vw;
+}
+
+.playlist-img {
+    object-fit: cover;
+    width: 150px;
+    height: 150px;
+    user-select: none;
+}
+
+.playlist-item {
+    margin: 20px;
+    padding: 20px;
+    /* border: 2px solid; */
+    /* border-color: black; */
+    display: flex;
+    align-items: flex-start;
+    background-color: #212121;
+    border-radius: 15px;
+}
+
+.playlist-item:hover {
+    background-color: #535353;
+    transition: background-color 0.4s;
+}
+
+.text-item {
+    flex-grow: 1;
+    margin-left: 20px;
+    display: block;
+    text-align: left;
+}
+
+.playlist-title {
+    margin-top: 0px;
+    margin-bottom: 0px;
+    font-size: 35px;
+    font-weight: 600;
+    text-decoration: none;
+    color: white;
+}
+
+.songs-display {
+    width: 60%;
+    height: 80vh;
+    display: block;
+    overflow: scroll;
+    margin: 20px;
+}
+
+.songs-display::-webkit-scrollbar {
+    display: none;
+}
+
+.song-img {
+    object-fit: cover;
+    width: 75px;
+    height: 75px;
+    user-select: none;
+}
+
+.song-item {
+    margin: 20px;
+    padding: 20px;
+
+    display: flex;
+    align-items: flex-start;
+    background-color: #212121;
+    border-radius: 15px;
+
+}
+
+.song-item:hover {
+    background-color: #535353;
+    transition: background-color 0.4s;
+}
+
+.songtext-item {
+    flex-grow: 1;
+    margin-left: 14px;
+    display: block;
+    text-align: left;
+}
+
+.song-title {
+    margin-top: 0px;
+    margin-bottom: 0px;
+    font-size: 20px;
+    font-weight: 600;
+    text-decoration: none;
+    color: white;
+}
+
+.duplicate {
+    background-color: #1db954;
+}
+
+h1 {
+    color: #1db954;
+    font-size: 40px;
+}
+
+.button {
+    background-color: #212121;
+    color: white;
+    font-size: 15px;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+
+    /* display: inline-block; */
+    /* align-items: flex-start; */
+}
+
+.button:hover {
+    background-color: #535353;
+    transition: background-color 0.4s;
+}
+
+.hidden {
+    display: none;
+}
