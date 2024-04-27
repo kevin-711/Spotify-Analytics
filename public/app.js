@@ -2,8 +2,6 @@ const login_btn = document.getElementById('login')
 const login_msg = document.getElementById('login-msg')
 const content = document.getElementById('content')
 
-// const getstuff = document.getElementById('playlists')
-
 document.addEventListener("DOMContentLoaded", async () => {
     
     const userid = localStorage.getItem('user_id')
@@ -196,6 +194,11 @@ function findduplicates(songlist) {
 
     if (duplicates.length == 0) {
         duplicates_list.textContent = 'No duplicates found, all good!'
+
+        const duplicates_container = document.createElement("div")
+        duplicates_container.className = "duplicates-wrapper"
+        duplicates_container.append(duplicates_list)
+        content.append(duplicates_container)
         return
     } else if (duplicates.length == 1) {
         var msg = "<p>Duplicate found:"
@@ -250,11 +253,3 @@ function gen_userid() {
     }
     return text;
 }
-
-// getstuff.addEventListener('click', async () => {
-
-//     const id = localStorage.getItem("user_id")
-//     const rep = await fetch(`/getplaylists/${id}`)
-//     // const resp = await fetch(`/userauthenticated/${id}`)
-
-// })

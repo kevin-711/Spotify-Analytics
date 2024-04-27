@@ -61,10 +61,6 @@ app.get('/callback', (req, res) => {
         const expires_in = data.body['expires_in'];
 
         temp_database[id] = {access_token: access_token, refresh_token: refresh_token}
-        // console.log("temp_database[`${id}`]: ", temp_database[`${id}`].access_token)
-
-        // spotifyApi.setAccessToken(access_token);
-        // spotifyApi.setRefreshToken(refresh_token);
 
         console.log('access_token:', access_token);
         console.log('refresh_token:', refresh_token);
@@ -72,9 +68,6 @@ app.get('/callback', (req, res) => {
         
         res.send('Success! You can now close the window.');
         console.log(temp_database)
-
-        // console.log(__dirname)
-        // res.sendFile(path.join(__dirname, './public/index.html'))
 
         // Make this send a html file instead, with formatting and stuff so it looks better
 
