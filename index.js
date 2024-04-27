@@ -6,6 +6,8 @@ app.listen(port, () => console.log(`Running at localhost:${port}`))
 app.use(express.static('public'))
 app.use(express.json({limit: '1mb'}))
 
+var SpotifyWebApi = require('spotify-web-api-node')
+
 const scopes = [
     'user-read-email',
     'user-read-private',
