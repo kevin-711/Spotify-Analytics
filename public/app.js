@@ -22,9 +22,11 @@ login_btn.addEventListener('click', async () => {
     const user_id = gen_userid()
     localStorage.setItem("user_id", user_id)
     
-    // window.location.href = `http://localhost:3000/login/${user_id}`
-    window.open(`http://localhost:3000/login/${user_id}`, '_blank')
-    // window.open(`http://localhost:3000/login`, '_blank')
+    const resp = await fetch("/auth")
+    let auth_link = await resp.json()
+    auth_link = auth_link.url + `/login/${user_id}`
+    
+    window.open(auth_link, '_blank')
 
     const check_authenticated = setInterval(async () => {
         

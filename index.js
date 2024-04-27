@@ -20,7 +20,7 @@ const scopes = [
 let temp_database = {}
 
 const spotifyApi = new SpotifyWebApi({
-    redirectUri: process.env.REDIRECT_URL,
+    redirectUri: process.env.URL + '/callback',
     clientId: process.env.CLIENT_ID,
     clientSecret: process.env.CLIENT_SECRET
 });
@@ -34,6 +34,11 @@ app.get('/login/:userid', (req, res) => {
     // res.redirect(spotifyApi.createAuthorizeURL(scopes) + `?userid=${req.params.userid}`)
     res.redirect(spotifyApi.createAuthorizeURL(scopes))
 });
+
+app.get('/auth', (req, res) => {
+    res.send({url: process.env.URL})
+})
+
 
 app.get('/callback', (req, res) => {
     const error = req.query.error;
@@ -54,27 +59,6 @@ app.get('/callback', (req, res) => {
         const access_token = data.body['access_token'];
         const refresh_token = data.body['refresh_token'];
         const expires_in = data.body['expires_in'];
-        
-        // try {
-        //     await client.connect();
-        //     const db = client.db('spotify');
-        //     const collection = db.collection('ids');
-    
-        //     const toinsert = {
-        //         id: id,
-        //         access_token: access_token,
-        //         refresh_token: refresh_token,
-        //     }
-        //     console.log(toinsert)
-        //     console.log("we did it")
-        //     const result = await collection.insertOne(toinsert)
-    
-        //     console.log(result);
-        // } catch {
-        //     console.log(error)
-        // } finally {
-        //     await client.close();
-        // }
 
         temp_database[id] = {access_token: access_token, refresh_token: refresh_token}
         // console.log("temp_database[`${id}`]: ", temp_database[`${id}`].access_token)
