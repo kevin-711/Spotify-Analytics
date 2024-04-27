@@ -12,7 +12,14 @@ body {
 }
 
 #content {
-    display: block;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    grid-auto-rows: minmax(100px, auto);
+    justify-content: center;
+    align-items: center;
+
+    /* display: block; */
     padding: 20px;
 }
 
@@ -64,9 +71,12 @@ body::-webkit-scrollbar {
 }
 
 .songs-display {
-    width: 60%;
-    height: 80vh;
-    display: block;
+    grid-column: 1 / 3;
+    grid-row: 1 / 3;
+
+    /* width: 60%; */
+    height: 60vh;
+    /* display: block; */
     overflow: scroll;
     margin: 20px;
 }
@@ -115,7 +125,15 @@ body::-webkit-scrollbar {
 }
 
 .duplicate {
-    background-color: #1db954;
+    background-color: #ff6700;
+}
+
+.duplicates-wrapper {
+    grid-column: 3 / 4;
+    grid-row: 1 / 2;
+    align-self: start;
+    padding: 20px;
+    display: block;
 }
 
 h1 {
@@ -124,6 +142,11 @@ h1 {
 }
 
 .button {
+    grid-column: 2 / 3;
+    grid-row: 3 / 4;
+    justify-self: center;
+    align-self: center;
+
     background-color: #212121;
     color: white;
     font-size: 15px;

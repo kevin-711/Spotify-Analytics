@@ -128,17 +128,21 @@ async function displaysongs(id, len) {
             try {
                 songlist.push(song.track.name)
 
+                console.log(song)
+
                 const root = document.createElement('div')
                 const text_root = document.createElement('div')
                 const image = document.createElement('img')
                 const name = document.createElement('a')
                 const artist = document.createElement('p')
                 // const song_num = document.createElement('p')
-
+                
                 image.src = song.track.album.images[0].url
                 image.className = 'song-img'
                 name.textContent = song.track.name
                 name.className = 'song-title'
+                name.href = song.track.external_urls.spotify
+                name.target = '_blank'
                 // name.setAttribute('data-name', song.track.name)
                 artist.textContent = song.track.album.artists[0].name
                 // song_num.textContent = `Total Songs: ${playlist.tracks.total}`
@@ -203,17 +207,19 @@ function findduplicates(songlist) {
     msg += "</p>"
 
     duplicates_list.innerHTML = msg
-    content.append(duplicates_list)
-
+    
     const showduplicates = document.createElement('button')
     showduplicates.innerHTML = 'Show only duplicates'
     showduplicates.className = "button"
-    content.append(showduplicates)
-
     showduplicates.addEventListener('click', () => showonlyduplicates())
+    
+    const duplicates_container = document.createElement("div")
+    duplicates_container.className = "duplicates-wrapper"
+    duplicates_container.append(duplicates_list)
+    duplicates_container.append(showduplicates)
+    content.append(duplicates_container)
 
     return
-    // return Array.from(duplicates);
 }
 
 function showonlyduplicates() {

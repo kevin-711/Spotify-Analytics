@@ -1,6 +1,8 @@
 const express = require('express')
 const app = express()
 
+require('dotenv').config()
+
 const port = 3000
 app.listen(port, () => console.log(`Running at localhost:${port}`))  
 app.use(express.static('public'))
@@ -18,9 +20,9 @@ const scopes = [
 let temp_database = {}
 
 const spotifyApi = new SpotifyWebApi({
-    redirectUri: 'http://localhost:3000/callback',
-    clientId: '802842a6cd22461d8a61ebc24f9ae143',
-    clientSecret: '33098d35517a4f568f51320380440671'
+    redirectUri: process.env.REDIRECT_URL,
+    clientId: process.env.CLIENT_ID,
+    clientSecret: process.env.CLIENT_SECRET
 });
 
 let id;
