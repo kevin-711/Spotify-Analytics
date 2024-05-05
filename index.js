@@ -1,6 +1,8 @@
 const express = require('express')
 const app = express()
 
+const datastore = require('nedb')
+
 require('dotenv').config()
 
 const port = 3000
@@ -18,6 +20,8 @@ const scopes = [
 ]
 
 let temp_database = {}
+const database = new datastore('database.db')
+database.loadDatabase()
 
 const spotifyApi = new SpotifyWebApi({
     redirectUri: process.env.URL + '/callback',
@@ -60,18 +64,20 @@ app.get('/callback', (req, res) => {
         const refresh_token = data.body['refresh_token'];
         const expires_in = data.body['expires_in'];
 
-        temp_database[id] = {access_token: access_token, refresh_token: refresh_token}
+        database.insert({
+            id: id,
+            access_token: access_token, 
+            refresh_token: refresh_token
+        })
 
         console.log('access_token:', access_token);
         console.log('refresh_token:', refresh_token);
         console.log(`Sucessfully retreived access token. Expires in ${expires_in} s.`);
         
         res.send('Success! You can now close the window.');
-        console.log(temp_database)
+        // console.log(temp_database)
 
-        // Make this send a html file instead, with formatting and stuff so it looks better
-
-        // Fix this so that it works on a per user basis (move to client side to call/refresh here)
+        // TODO: Fix this so that it works on a per user basis (move to client side to call/refresh here)
         setInterval(async () => {
             const data = await spotifyApi.refreshAccessToken();
             const access_token = data.body['access_token'];
@@ -93,24 +99,26 @@ app.get('/getsongs/:userid', (req, res) => {
     const id = req.query.id
     const offset = req.query.offset
 
-    // console.log(id)
-    // console.log(offset)
+    database.find({id: userid}).exec(function (err, data) {
 
-    const access_token = temp_database[`${userid}`].access_token
+        const access_token = data[0].access_token
 
-    spotifyApi.setAccessToken(access_token);
+        spotifyApi.setAccessToken(access_token);
+    
+        spotifyApi.getPlaylistTracks(id, {
+            offset: offset,
+            limit: 100,
+            fields: 'items'
+        }).then(function(data) {
+            res.send(data.body)
+        },
+        function(err) {
+            console.log('Something went wrong!', err);
+            res.send(err)
+        });
 
-    spotifyApi.getPlaylistTracks(id, {
-        offset: offset,
-        limit: 100,
-        fields: 'items'
-    }).then(function(data) {
-        res.send(data.body)
-    },
-    function(err) {
-        console.log('Something went wrong!', err);
-        res.send(err)
-    });
+    })
+
 })
 
 app.get('/getplaylists/:userid', (req, res) => {
@@ -118,16 +126,20 @@ app.get('/getplaylists/:userid', (req, res) => {
     // console.log("Request recieved")
 
     const userid = req.params.userid
-    const access_token = temp_database[`${userid}`].access_token
 
-    spotifyApi.setAccessToken(access_token);
+    database.find({id: userid}).exec(function (err, data) {
 
-    spotifyApi.getUserPlaylists().then(function(data) {
-        res.send(data.body)
-    },function(err) {
-        console.log('Something went wrong! playlist', err);
-        res.send(err)
-    });
+        const access_token = data[0].access_token
+        
+        spotifyApi.setAccessToken(access_token);
+    
+        spotifyApi.getUserPlaylists().then(function(data) {
+            res.send(data.body)
+        },function(err) {
+            console.log('Something went wrong! playlist', err);
+            res.send(err)
+        });
+    })
 
 })
 
@@ -136,10 +148,14 @@ app.get('/userauthenticated/:userid', (req, res) => {
     const userid = req.params.userid
     // console.log(userid)
     // console.log("Temp: ", temp_database)
-    if (userid in temp_database) {
-        res.send(true)
-    } else {
-        res.send(false)
-    }
+
+    database.find({id: userid}).exec(function (err, data) {
+
+        if (data.length == 0) {
+            res.send(false)
+        } else {
+            res.send(true)
+        }
+    })
 
 })
